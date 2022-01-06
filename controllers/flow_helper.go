@@ -11,14 +11,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-type MintRequest struct {
-	RequestId  uint64       `json:"requestId"`
-	Creator    flow.Address `json:"creator"`
-	TemplateId uint64       `json:"templateId"`
-	Price      string       `json:"price"`
-	Completed  bool         `json:"completed"`
-}
-
 func ExecuteScript(node string, script []byte) cadence.Value {
 	ctx := context.Background()
 	c, err := client.New(node, grpc.WithInsecure())

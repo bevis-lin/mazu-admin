@@ -8,7 +8,7 @@ type Template struct {
 	TemplateId  uint64       `json:"templateId"`
 	SiteId      string       `json:"siteId"`
 	Creator     flow.Address `json:"creator"`
-	Name        string       `json:"Name"`
+	Name        string       `json:"name"`
 	Description string       `json:"description"`
 	ImageUrl    string       `json:"imageUrl"`
 	Data        string       `json:"data"`

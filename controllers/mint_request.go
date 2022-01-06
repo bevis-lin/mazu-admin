@@ -29,7 +29,7 @@ func getAllTemplate() []models.Template {
 
 	var templates []models.Template
 
-	fmt.Println(s)
+	//fmt.Println(s)
 
 	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
@@ -62,7 +62,7 @@ func GetAllRequests(c *gin.Context) {
 
 	templates := getAllTemplate()
 
-	fmt.Println(templates)
+	//fmt.Println(templates)
 
 	script, err := ioutil.ReadFile("flow/get-all-mint-request.cdc")
 	if err != nil {
