@@ -81,8 +81,8 @@ func GetAllRequests(c *gin.Context) {
 			RequestId:  mintT.Fields[0].ToGoValue().(uint64),
 			Creator:    mintT.Fields[1].ToGoValue().([flow.AddressLength]byte),
 			TemplateId: mintT.Fields[2].ToGoValue().(uint64),
-			Price:      mintT.Fields[3].String(),
-			Completed:  mintT.Fields[4].ToGoValue().(bool)}
+			//Price:      mintT.Fields[3].String(),
+			Completed: mintT.Fields[3].ToGoValue().(bool)}
 
 		for _, template := range templates {
 			if template.TemplateId == mintRequestStruct.TemplateId {

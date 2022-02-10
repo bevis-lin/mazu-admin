@@ -1,5 +1,5 @@
-import SentimenTemplate from 0x78e84183b7e33d61
-import SentimenCreator from 0x78e84183b7e33d61
+import SentimenTemplate from 0x2ebc7543c6a3f855
+import SentimenCreator from 0x2ebc7543c6a3f855
 
 
 pub fun main(): {UInt64: SentimenTemplate.Template} {
