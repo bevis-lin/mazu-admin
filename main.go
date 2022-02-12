@@ -45,6 +45,6 @@ func main() {
 
 	r.POST("/mint/requests/approve", controllers.ApproveMintRequest)
 
-	r.Run(":8081")
+	r.Run()
 
 }
