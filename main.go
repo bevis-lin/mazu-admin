@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"mazu/admin/controllers"
 	"mazu/admin/middleware"
 	"mazu/admin/service"
@@ -11,6 +12,12 @@ import (
 )
 
 func main() {
+
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 
 	// err := godotenv.Load()
 	// if err != nil {
@@ -44,6 +51,6 @@ func main() {
 
 	r.POST("/mint/requests/approve", controllers.ApproveMintRequest)
 
-	r.Run(":" + os.Getenv("PORT"))
+	r.Run(":" + port)
 
 }
