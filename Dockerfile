@@ -31,4 +31,6 @@ EXPOSE 80
 
 #USER nonroot:nonroot
 
-ENTRYPOINT ["/mazu-admin-api"]
+#ENTRYPOINT ["/mazu-admin-api"]
+
+CMD ["./main"]

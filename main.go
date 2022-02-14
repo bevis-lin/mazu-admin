@@ -44,6 +44,6 @@ func main() {
 
 	r.POST("/mint/requests/approve", controllers.ApproveMintRequest)
 
-	r.Run()
+	r.Run(":" + os.Getenv("PORT"))
 
 }
