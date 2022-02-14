@@ -10,7 +10,7 @@ COPY flow/ ./flow
 COPY middleware ./middleware
 COPY service/ ./service
 COPY main.go ./
-COPY .env ./
+#COPY .env ./
 
 
 RUN export CGO_ENABLED=0 && go build -o /mazu-admin-api
@@ -24,7 +24,7 @@ FROM gcr.io/distroless/base-debian10
 WORKDIR /
 
 COPY --from=builder /mazu-admin-api /mazu-admin-api
-COPY --from=builder /app/.env/ .
+#COPY --from=builder /app/.env/ .
 COPY --from=builder /app/flow/ .
 
 #EXPOSE 8081
