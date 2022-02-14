@@ -3,4 +3,4 @@ build:
     - go
 
 run:
-  web: mazu-admin
+  web: admin
