@@ -24,10 +24,10 @@ FROM gcr.io/distroless/base-debian10
 WORKDIR /
 
 COPY --from=builder /mazu-admin-api /mazu-admin-api
-#COPY --from=builder /app/.env/ .
+#git COPY --from=builder /app/.env/ .
 COPY --from=builder /app/flow/ .
 
-#EXPOSE 8081
+EXPOSE 80
 
 #USER nonroot:nonroot
 
