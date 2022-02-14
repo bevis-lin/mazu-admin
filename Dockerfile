@@ -33,4 +33,4 @@ EXPOSE 80
 
 #ENTRYPOINT ["/mazu-admin-api"]
 
-CMD ["./main"]
+CMD ["./mazu-admin-api"]
