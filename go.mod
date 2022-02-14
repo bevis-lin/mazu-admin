@@ -1,11 +1,10 @@
 module mazu/admin
 
-go 1.15
+go 1.13
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.7
-	github.com/joho/godotenv v1.4.0
 	github.com/json-iterator/go v1.1.9
 	github.com/onflow/cadence v0.20.1
 	github.com/onflow/flow-go-sdk v0.24.0
