@@ -66,7 +66,7 @@ func GetAllRequests(c *gin.Context) {
 
 	script, err := ioutil.ReadFile("flow/get-all-mint-request.cdc")
 	if err != nil {
-		panic("failed to load Candence script...")
+		panic("failed to load Candence script...v2")
 	}
 
 	result := ExecuteScript(Node, []byte(script))
