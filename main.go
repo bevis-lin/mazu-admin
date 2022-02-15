@@ -34,7 +34,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.POST("/login", func(ctx *gin.Context) {
+	r.POST("/api/login", func(ctx *gin.Context) {
 		token := loginController.Login(ctx)
 		if token != "" {
 			ctx.JSON(http.StatusOK, gin.H{
@@ -45,11 +45,11 @@ func main() {
 		}
 	})
 
-	r.GET("/mint/requests", controllers.GetAllRequests)
+	r.GET("/api/mint/requests", controllers.GetAllRequests)
 
 	r.Use(middleware.AuthorizeJWT())
 
-	r.POST("/mint/requests/approve", controllers.ApproveMintRequest)
+	r.POST("/api/mint/requests/approve", controllers.ApproveMintRequest)
 
 	r.Run(":" + port)
 
