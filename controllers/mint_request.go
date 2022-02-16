@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"mazu/admin/core/models"
+	"net/smtp"
 	"os"
 	"strconv"
 
@@ -16,6 +19,7 @@ import (
 var AdminAddress = os.Getenv("ADMIN_ADDRESS")
 var AdminPrivateKey = os.Getenv("ADMIN_PRIVATE_KEY")
 var Node = os.Getenv("ACCESS_NODE")
+var GmailPassword = os.Getenv("GMAIL_PASSWORD")
 
 func getAllTemplate() []models.Template {
 	script, err := ioutil.ReadFile("flow/get-all-template.cdc")
@@ -23,7 +27,7 @@ func getAllTemplate() []models.Template {
 		panic("failed to load Candence script")
 	}
 
-	result := ExecuteScript(Node, []byte(script))
+	result := ExecuteScript(Node, []byte(script), nil)
 
 	s := result.(cadence.Dictionary)
 
@@ -69,7 +73,7 @@ func GetAllRequests(c *gin.Context) {
 		panic("failed to load Candence script...v3")
 	}
 
-	result := ExecuteScript(Node, []byte(script))
+	result := ExecuteScript(Node, []byte(script), nil)
 
 	s := result.(cadence.Dictionary)
 
@@ -128,6 +132,75 @@ func ApproveMintRequest(c *gin.Context) {
 
 	SendTransaction(Node, &tx)
 
+	creator, err := getCreatorByMintRequestId(rqID)
+
+	if err != nil {
+		panic("can't get creator profile")
+	}
+
+	fmt.Println("creator:", creator)
+
+	from := "bevis711@gmail.com"
+	fmt.Println("password:", GmailPassword)
+	password := GmailPassword
+	to := []string{creator.Email}
+	smtpHost := "smtp.gmail.com"
+	smtpPort := "587"
+
+	srtMessage := "Mint request(id:" + requestIdValue + ") has been approved."
+	msg := "From: " + from + "\n" + "To: " + to[0] + "\n" + "Subject: Sentimen mint result\n\n" + srtMessage
+
+	message := []byte(msg)
+
+	// Create authentication
+	auth := smtp.PlainAuth("", from, password, smtpHost)
+
+	// Send actual message
+	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	c.JSON(200, gin.H{"status": "ok", "txId": tx.ID().String()})
+
+}
+
+func getRequestById(requestId uint64) (*models.MintRequest, error) {
+	script, err := ioutil.ReadFile("flow/get-mint-request-by-id.cdc")
+	if err != nil {
+		return nil, errors.New("failed to load Candence script...")
+	}
+
+	args := []cadence.Value{cadence.NewUInt64(requestId)}
+
+	result := ExecuteScript(Node, []byte(script), args)
+
+	mintT := result.(cadence.Optional).Value.(cadence.Struct)
+
+	mintRequestStruct := models.MintRequest{
+		RequestId:  mintT.Fields[0].ToGoValue().(uint64),
+		Creator:    mintT.Fields[1].ToGoValue().([flow.AddressLength]byte),
+		TemplateId: mintT.Fields[2].ToGoValue().(uint64),
+		//Price:      mintT.Fields[3].String(),
+		Completed: mintT.Fields[3].ToGoValue().(bool)}
+
+	return &mintRequestStruct, nil
+
+}
+
+func getCreatorByMintRequestId(requestId uint64) (*models.Creator, error) {
+	mintRequest, err := getRequestById(requestId)
+	if err != nil {
+		return nil, err
+	}
+
+	creator, err := getCreatorProfile(mintRequest.Creator)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return creator, nil
 
 }

@@ -11,14 +11,14 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ExecuteScript(node string, script []byte) cadence.Value {
+func ExecuteScript(node string, script []byte, args []cadence.Value) cadence.Value {
 	ctx := context.Background()
 	c, err := client.New(node, grpc.WithInsecure())
 	if err != nil {
 		panic("failed to connect to node")
 	}
 
-	result, err := c.ExecuteScriptAtLatestBlock(ctx, script, nil)
+	result, err := c.ExecuteScriptAtLatestBlock(ctx, script, args)
 	if err != nil {
 		panic(err)
 	}
