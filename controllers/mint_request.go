@@ -19,7 +19,7 @@ import (
 var AdminAddress = os.Getenv("ADMIN_ADDRESS")
 var AdminPrivateKey = os.Getenv("ADMIN_PRIVATE_KEY")
 var Node = os.Getenv("ACCESS_NODE")
-var GmailPassword = os.Getenv("GMAIL_PASSWORD")
+var EmailPassword = os.Getenv("EMAIL_PASSWORD")
 
 func getAllTemplate() []models.Template {
 	script, err := ioutil.ReadFile("flow/get-all-template.cdc")
@@ -140,11 +140,11 @@ func ApproveMintRequest(c *gin.Context) {
 
 	fmt.Println("creator:", creator)
 
-	from := "bevis711@gmail.com"
-	fmt.Println("password:", GmailPassword)
-	password := GmailPassword
+	from := "bevis@digi96.com"
+	fmt.Println("password:", EmailPassword)
+	password := EmailPassword
 	to := []string{creator.Email}
-	smtpHost := "smtp.gmail.com"
+	smtpHost := "smtpout.secureserver.net"
 	smtpPort := "587"
 
 	srtMessage := "Mint request(id:" + requestIdValue + ") has been approved."
